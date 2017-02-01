@@ -30,14 +30,14 @@ var ReadTripData = function(){
     });
 
     console.log(stationsComingGoing);
-    var graphSvg = mainDiv.append("svg").style("width", "100%").style("height", "900px");
+    var graphSvg = mainDiv.append("svg").style("width", "100%").style("height", "1200px");
     var maxMax = maxArrivals > maxDepartures ? maxArrivals : maxDepartures;
     console.log("maxMax is ", maxMax);
-    var yScale = d3.scaleLinear().domain([maxMax, 0]).range([0, 800]);
-    var yAxis = d3.axisLeft(yScale);
-    yAxis.ticks(15);
-    yAxis.tickFormat(d3.format(",d"));
-    graphSvg.append("g").attr("transform", "translate(50, 20)").call(yAxis);
+    var xScale = d3.scaleLinear().domain([0, maxMax]).range([0, 800]);
+    var xAxis = d3.axisBottom(xScale);
+    xAxis.ticks(15);
+    xAxis.tickFormat(d3.format(",d"));
+    graphSvg.append("g").attr("transform", "translate(200, 1020)").call(xAxis);
 
     var stations = [];
     var stationNames = [];
@@ -48,15 +48,10 @@ var ReadTripData = function(){
         stationNames.push(stationsComingGoing[key].name);
       }
     }
-    var xScale = d3.scaleBand().domain(stationNames).range([0,1000]);
-    var xAxis = d3.axisBottom(xScale);
-    stationNames.forEach(function(name){
-      console.log(name);
-      console.log(xScale(name));
-    });
-    //xAxis.tickValues(stationNames);
-    graphSvg.append("g").attr("transform", "translate(50, 820)").call(xAxis)
-      .selectAll("text").attr("transform", "rotate(90) translate(75,"+xScale.bandwidth()*-1+")");
+    var yScale = d3.scaleBand().domain(stationNames).range([20,1000]);
+    var yAxis = d3.axisLeft(yScale);
+
+    graphSvg.append("g").attr("transform", "translate(200, 20)").call(yAxis);
 
 
 
