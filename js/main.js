@@ -48,10 +48,35 @@ var ReadTripData = function(){
         stationNames.push(stationsComingGoing[key].name);
       }
     }
-    var yScale = d3.scaleBand().domain(stationNames).range([20,1000]);
+    var yScale = d3.scaleBand().domain(stationNames).range([0, 1000]);
     var yAxis = d3.axisLeft(yScale);
 
     graphSvg.append("g").attr("transform", "translate(200, 20)").call(yAxis);
+    var plotG = graphSvg.append("g").attr("transform", "translate(201, 20)")
+
+    plotG.selectAll("#arrivalLine")
+      .data(stations)
+      .enter()
+      .append("line")
+      .attr("x1", 0)
+      .attr("x2", function(d){ return xScale(d.arrivals) })
+      .attr("y1", function(d){ return yScale(d.name)+(yScale.bandwidth() / 2)-1.5 })
+      .attr("y2", function(d){ return yScale(d.name)+(yScale.bandwidth() / 2)-1.5 })
+      .attr("id", "arrivalLine")
+      .style("stroke", "forestgreen")
+      .style("stroke-width", "3px");
+
+    plotG.selectAll("#departureLine")
+      .data(stations)
+      .enter()
+      .append("line")
+      .attr("x1", 0)
+      .attr("x2", function(d){ return xScale(d.departures) })
+      .attr("y1", function(d){ return yScale(d.name)+(yScale.bandwidth() / 2)+1.5 })
+      .attr("y2", function(d){ return yScale(d.name)+(yScale.bandwidth() / 2)+1.5 })
+      .attr("id", "departureLine")
+      .style("stroke", "crimson")
+      .style("stroke-width", "3px");
 
 
 
